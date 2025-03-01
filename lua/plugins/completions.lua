@@ -33,11 +33,32 @@ return {
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
         }),
         sources = cmp.config.sources({
+          {
+            name = "copilot",
+            group_index = 1,
+            priority = 100,
+          },
           { name = "nvim_lsp" },
           { name = "luasnip" },
         }, {
           { name = "buffer" },
         }),
+        formatting = {
+          format = function(entry, vim_item)
+            local kind_icons = {
+              Copilot = "🤖 ",
+            }
+
+            if entry.source.name == "copilot" then
+              vim_item.kind = kind_icons.Copilot .. "Copilot"
+
+              vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+              vim_item.kind_hl_group = "CmpItemKindCopilot"
+            end
+
+            return vim_item
+          end,
+        },
       })
     end,
   },
