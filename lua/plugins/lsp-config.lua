@@ -12,12 +12,12 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
+          "ts_ls",
           "html",
           "htmx",
           "cssls",
           "tailwindcss",
           "eslint",
-          "volar",
           "ruby_lsp",
           "stimulus_ls",
           "pylsp",
@@ -42,12 +42,14 @@ return {
       })
       lspconfig.htmx.setup({
         capabilities = capabilities,
+        filetypes = { "html" },  -- Restrict htmx to only work with HTML files
       })
       lspconfig.eslint.setup({
         capabilities = capabilities,
         bin = "eslint_d",
+        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
         diagnostics = {
-          enable = false,
+          enable = true,
           run_on = "type",
         },
       })
@@ -63,17 +65,19 @@ return {
       lspconfig.stimulus_ls.setup({
         capabilities = capabilities,
       })
-      lspconfig.pylsp.setup({
-        capabilities = capabilities,
-      })
       lspconfig.volar.setup({
         capabilities = capabilities,
-        filetypes = { "typescript", "javascript", "vue", "json" },
+        filetypes = { "vue", "json" },
         init_options = {
           vue = {
             hybridMode = false,
           },
         },
+      })
+
+      lspconfig.ts_ls.setup({
+        capabilities = capabilities,
+        filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "jsx", "tsx" },
       })
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

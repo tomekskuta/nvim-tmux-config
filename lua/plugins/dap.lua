@@ -115,16 +115,6 @@ return {
 			-- ╰──────────────────────────────────────────────────────────╯
 			dap.set_log_level("TRACE")
 
-			-- Automatically open UI
-			dap.listeners.before.attach["dapui_config"] = function()
-				dapui.open()
-			end
-			dap.listeners.before.launch["dapui_config"] = function()
-				dapui.open()
-			end
-			dap.listeners.after.event_initialized["dapui_config"] = function()
-				dapui.open()
-			end
 			dap.listeners.before.event_terminated["dapui_config"] = function()
 				dapui.close()
 			end
@@ -255,7 +245,9 @@ return {
 						name = "Next.js: debug server-side (pwa-node)",
 						type = "pwa-node",
 						request = "attach",
-						port = 9231,
+						port = function()
+							return vim.fn.input("Select port: ", 9231)
+						end,
 						skipFiles = { "<node_internals>/**", "node_modules/**" },
 						cwd = "${workspaceFolder}",
 					},
