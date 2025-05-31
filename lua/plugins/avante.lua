@@ -15,6 +15,51 @@ end
 
 vim.api.nvim_create_user_command("AvanteRagToggle", AvanteRagToggle, {})
 
+-- Function to generate commit message using Avante
+function AvanteCommitMessage()
+	-- Get current branch name
+	local branch_name = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n", "")
+
+	-- Extract Jira ticket number from branch name (format: ABC-123)
+	local jira_ticket = branch_name:match("([A-Z]+%-[0-9]+)")
+	local ticket_prefix = jira_ticket and "[" .. jira_ticket .. "] " or ""
+
+	-- Get git status and diff
+	local git_status = vim.fn.system("git status --porcelain")
+	local git_diff_staged = vim.fn.system("git diff --staged")
+	local git_diff_unstaged = vim.fn.system("git diff")
+
+	-- Prepare the prompt for Avante
+	local jira_instruction = jira_ticket and ("- Start with: " .. ticket_prefix) or ""
+	local prompt = "Analyze the following git changes and generate a commit message.\n\n"
+		.. "Requirements:\n"
+		.. "- Use conventional commit format (feat:, fix:, docs:, etc.)\n"
+		.. "- Write in English\n"
+		.. "- Be concise but descriptive\n"
+		.. "- Focus on the 'why' rather than the 'what'\n"
+		.. jira_instruction .. "\n\n"
+		.. "Git Status:\n" .. git_status .. "\n\n"
+		.. "Staged Changes:\n" .. git_diff_staged .. "\n\n"
+		.. "Unstaged Changes:\n" .. git_diff_unstaged .. "\n\n"
+		.. "Please provide:\n"
+		.. "1. A brief analysis of what changed in the code (2-4 bullet points)\n"
+		.. "2. The recommended commit message\n\n"
+		.. "Format your response as:\n"
+		.. "## Changes:\n"
+		.. "- [bullet point 1]\n"
+		.. "- [bullet point 2]\n"
+		.. "- [etc.]\n\n"
+		.. "## Commit Message:\n"
+		.. "[the commit message]"
+
+	-- Use Avante API to generate commit message
+	require('avante.api').ask { question = prompt }
+end
+
+-- Create user command and keymap
+vim.api.nvim_create_user_command("AvanteCommitMessage", AvanteCommitMessage, {})
+vim.keymap.set('n', '<leader>agc', AvanteCommitMessage, { desc = "Generate commit message with Avante" })
+
 return {
 	"yetone/avante.nvim",
 	event = "VeryLazy",
@@ -44,7 +89,7 @@ return {
 			["copilot:claude4"] = {
 				__inherited_from = "copilot",
 				model = "claude-sonnet-4",
-        reasoning_effort = "high",
+				reasoning_effort = "high",
 				max_tokens = tokens(64),
 			},
 			["copilot:gemini"] = {
