@@ -164,7 +164,7 @@ return {
     fallback_provider = "copilot:3.7",
     cursor_applying_provider = "copilot:gemini",
     rag_service = { -- RAG Service configuration
-      enabled = true,                                       -- Enables the RAG service
+      enabled = false,                                       -- Enables the RAG service
       host_mount = vim.fn.expand("~") .. "/Documents/projects", -- Host mount path for the rag service (Docker will mount this path)
       runner = "docker",                                    -- Runner for the RAG service (can use docker or nix)
       llm = {                                               -- Language Model (LLM) configuration for RAG service
