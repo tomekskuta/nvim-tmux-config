@@ -152,6 +152,8 @@ return {
     },
     behaviour = {
       enable_cursor_planning_mode = true,
+      enable_token_counting = false,
+      support_paste_from_clipboard = true,
     },
     dual_boost = {
       enabled = true,
@@ -163,25 +165,25 @@ return {
     },
     fallback_provider = "copilot:3.7",
     cursor_applying_provider = "copilot:gemini",
-    rag_service = { -- RAG Service configuration
+    rag_service = {                                          -- RAG Service configuration
       enabled = false,                                       -- Enables the RAG service
       host_mount = vim.fn.expand("~") .. "/Documents/projects", -- Host mount path for the rag service (Docker will mount this path)
-      runner = "docker",                                    -- Runner for the RAG service (can use docker or nix)
-      llm = {                                               -- Language Model (LLM) configuration for RAG service
-        provider = "openai",                                -- LLM provider
-        endpoint = "https://api.openai.com/v1",            -- LLM API endpoint
-        api_key = "OPENAI_API_KEY",                         -- Environment variable name for the LLM API key
-        model = "o3-mini",                                  -- LLM model name
-        extra = nil,                                        -- Additional configuration options for LLM
+      runner = "docker",                                     -- Runner for the RAG service (can use docker or nix)
+      llm = {                                                -- Language Model (LLM) configuration for RAG service
+        provider = "openai",                                 -- LLM provider
+        endpoint = "https://api.openai.com/v1",              -- LLM API endpoint
+        api_key = "OPENAI_API_KEY",                          -- Environment variable name for the LLM API key
+        model = "o3-mini",                                   -- LLM model name
+        extra = nil,                                         -- Additional configuration options for LLM
       },
-      embed = {                                             -- Embedding model configuration for RAG service
-        provider = "openai",                                -- Embedding provider
-        endpoint = "https://api.openai.com/v1",            -- Embedding API endpoint
-        api_key = "OPENAI_API_KEY",                         -- Environment variable name for the embedding API key
-        model = "text-embedding-3-large",                  -- Embedding model name
-        extra = nil,                                        -- Additional configuration options for the embedding model
+      embed = {                                              -- Embedding model configuration for RAG service
+        provider = "openai",                                 -- Embedding provider
+        endpoint = "https://api.openai.com/v1",              -- Embedding API endpoint
+        api_key = "OPENAI_API_KEY",                          -- Environment variable name for the embedding API key
+        model = "text-embedding-3-large",                    -- Embedding model name
+        extra = nil,                                         -- Additional configuration options for the embedding model
       },
-      docker_extra_args = "",                               -- Extra arguments to pass to the docker command
+      docker_extra_args = "",                                -- Extra arguments to pass to the docker command
     },
     -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
     system_prompt = function()

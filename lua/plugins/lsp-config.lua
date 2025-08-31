@@ -14,13 +14,11 @@ return {
           "lua_ls",
           "ts_ls",
           "html",
-          "htmx",
           "cssls",
           "tailwindcss",
           "eslint",
-          "ruby_lsp",
-          "stimulus_ls",
           "pylsp",
+          -- "vue_ls",
         },
       })
     end,
@@ -34,15 +32,26 @@ return {
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
       })
+      -- Get Vue language server path for Mason
+      -- local vue_language_server_path = vim.fn.stdpath("data")
+      --     .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+
       lspconfig.ts_ls.setup({
         capabilities = capabilities,
+        filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "jsx", "tsx", "vue" },
+        -- init_options = {
+        --   plugins = {
+        --     {
+        --       name = "@vue/typescript-plugin",
+        --       location = vue_language_server_path,
+        --       languages = { "vue" },
+        --       configNamespace = "typescript",
+        --     },
+        --   },
+        -- },
       })
       lspconfig.html.setup({
         capabilities = capabilities,
-      })
-      lspconfig.htmx.setup({
-        capabilities = capabilities,
-        filetypes = { "html" },  -- Restrict htmx to only work with HTML files
       })
       lspconfig.eslint.setup({
         capabilities = capabilities,
@@ -52,6 +61,10 @@ return {
           enable = true,
           run_on = "type",
         },
+        on_attach = function(client, bufnr)
+          -- Disable hover for eslint to prevent duplicate hover with ts_ls
+          client.server_capabilities.hoverProvider = false
+        end,
       })
       lspconfig.cssls.setup({
         capabilities = capabilities,
@@ -59,26 +72,10 @@ return {
       lspconfig.tailwindcss.setup({
         capabilities = capabilities,
       })
-      lspconfig.ruby_lsp.setup({
-        capabilities = capabilities,
-      })
-      lspconfig.stimulus_ls.setup({
-        capabilities = capabilities,
-      })
-      lspconfig.volar.setup({
-        capabilities = capabilities,
-        filetypes = { "vue", "json" },
-        init_options = {
-          vue = {
-            hybridMode = false,
-          },
-        },
-      })
-
-      lspconfig.ts_ls.setup({
-        capabilities = capabilities,
-        filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "jsx", "tsx" },
-      })
+      -- lspconfig.vue_ls.setup({
+      --   capabilities = capabilities,
+      --   filetypes = { "vue" },
+      -- })
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})

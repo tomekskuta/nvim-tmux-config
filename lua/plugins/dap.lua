@@ -340,6 +340,11 @@ return {
 				desc = "Conditional Breakpoint",
 			},
 			{
+				"<Leader>dl",
+				"<CMD>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('🛸 Your Log: '))<CR>",
+				desc = "Log point message",
+			},
+			{
 				"<Leader>dd",
 				"<CMD>lua require('dap').continue()<CR>",
 				desc = "Continue",
