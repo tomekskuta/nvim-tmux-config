@@ -72,8 +72,8 @@ return {
 	lazy = false,
 	version = false, -- set this if you want to always pull the latest change
 	opts = {
+    instructions_file = "AGENTS.md",
 		provider = "copilot",
-		auto_suggestions_provider = "copilot",
 		providers = {},
 		behaviour = {
 			enable_cursor_planning_mode = true,
@@ -104,7 +104,11 @@ return {
 		-- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
 		system_prompt = function()
 			local hub = require("mcphub").get_hub_instance()
-			return hub:get_active_servers_prompt()
+			local servers_prompt = hub:get_active_servers_prompt()
+			local concise_instruction =
+				"\n\nCommunication style: Be extremely concise. Sacrifice grammar for concision. Direct answers only. No explanations unless critical. Minimal code. Zero filler."
+
+			return servers_prompt .. concise_instruction
 		end,
 		-- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
 		custom_tools = function()
