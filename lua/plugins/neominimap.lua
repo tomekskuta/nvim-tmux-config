@@ -54,6 +54,10 @@ return {
       mark = {
         enabled = true, ---@type boolean
       },
+
+      treesitter = {
+        enabled = false,
+      },
     }
   end
 }

@@ -47,7 +47,7 @@ function AvanteCommitMessage()
 		.. "Please provide:\n"
 		.. "1. A brief analysis of what changed in the code (2-4 bullet points)\n"
 		.. "2. The recommended commit message\n"
-		.. "3. Ask the user if they want to execute the git commit command with the generated message\n\n"
+		.. "3. Ask the user if they want to execute the git commit command with the generated message (but DON'T COMMIT CHANGES NOW)\n\n"
 		.. "Format your response as:\n"
 		.. "## Changes:\n"
 		.. "- [bullet point 1]\n"
